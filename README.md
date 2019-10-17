@@ -3,6 +3,7 @@
 Control Team Files for Project Hex 19/20
 
 # Getting Started
+
 ## Image Recognition
 * OpenCV 4.1.2 Tutorial: https://docs.opencv.org/4.1.2/d9/df8/tutorial_root.html 
 
@@ -11,6 +12,10 @@ Control Team Files for Project Hex 19/20
 * Beginner friendly Python IDE: https://thonny.org/
 * Dronekit documentation: https://dronekit.netlify.com/
 * Data transmission system: https://github.com/rodizio1/EZ-WifiBroadcast
-## General Guides
+
+## General Guides & Info
 * Github Guide: https://guides.github.com/activities/hello-world/
 * Git install guide: https://git-scm.com/book/en/v2/Getting-Started-Installing-Git
+* ArduCopter: http://ardupilot.org/copter/
+* Mission Planner: http://ardupilot.org/planner/
+* Qgroundcontrol: http://qgroundcontrol.com/
