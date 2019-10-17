@@ -13,3 +13,4 @@ Control Team Files for Project Hex 19/20
 * Data transmission system: https://github.com/rodizio1/EZ-WifiBroadcast
 ## General Guides
 * Github Guide: https://guides.github.com/activities/hello-world/
+* Git install guide: https://git-scm.com/book/en/v2/Getting-Started-Installing-Git
