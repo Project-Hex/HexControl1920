@@ -1,3 +1,4 @@
+![img](https://github.com/3888winner/HexControl1920/blob/master/HexCover.jpg?raw=true)
 # HexControl1920
 Control Team Files for Project Hex 19/20
 
