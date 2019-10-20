@@ -5,7 +5,10 @@ Control Team Files for Project Hex 19/20
 # Getting Started
 
 ## Image Recognition
-* OpenCV 4.1.2 Tutorial: https://docs.opencv.org/4.1.2/d9/df8/tutorial_root.html 
+* OpenCV Install: https://opencv.org/releases/
+* Setting up OpenCV with Visual Studio 2017 (Windows): https://www.youtube.com/watch?v=Oi3HaBH8RC4
+* Setting up OpenCV with Xcode (Mac): https://www.youtube.com/watch?v=o62iO8SssZk
+* OpenCV 4.1.1 Tutorial: https://docs.opencv.org/4.1.1/d9/df8/tutorial_root.html 
 
 ## Communication
 * Installing Python 2.7: https://www.python.org/downloads/release/python-2716/
