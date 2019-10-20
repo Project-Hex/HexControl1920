@@ -23,3 +23,6 @@ Control Team Files for Project Hex 19/20
 * ArduCopter: http://ardupilot.org/copter/
 * Mission Planner: http://ardupilot.org/planner/
 * Qgroundcontrol: http://qgroundcontrol.com/
+
+## Research & Examples
+* https://www.pyimagesearch.com/2015/05/04/target-acquired-finding-targets-in-drone-and-quadcopter-video-streams-using-python-and-opencv/
