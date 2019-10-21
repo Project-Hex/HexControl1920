@@ -15,6 +15,7 @@ Control Team Files for Project Hex 19/20
 * Beginner friendly Python IDE: https://thonny.org/
 * Dronekit documentation: https://dronekit.netlify.com/
 * Data transmission system: https://github.com/rodizio1/EZ-WifiBroadcast
+* Other option: https://github.com/HD-Fpv/Open.HD/wiki
 
 ## General Guides & Info
 * UAS Challenge Rules and Guidelines: https://www.imeche.org/events/challenges/uas-challenge/team-resources/challenge-document-library
