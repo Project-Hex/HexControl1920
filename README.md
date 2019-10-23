@@ -3,7 +3,7 @@
 Control Team Files for Project Hex 19/20
 
 # Objectives
-
+![img](https://github.com/3888winner/HexControl1920/blob/master/Mission.PNG?raw=true)
 ## Image Recognition
 
 ### Research
