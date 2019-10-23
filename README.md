@@ -44,6 +44,24 @@ Control Team Files for Project Hex 19/20
 
 # Getting Started
 
+## Setup
+
+### Windows
+
+The project has a Visual Studio project ready to use. The only prerequisites are a local install of OpenCV.
+
+#### OpenCV
+
+Download the [OpenCV Binaries for Windows](https://opencv.org/releases/) and unpack them somewhere on your system. _(e.g. `C:\Program Files\opencv`)_
+
+Set the `OPENCV_DIR` environment variable to the `.\build\x64\vc15` folder inside your OpenCV  installation directory. _(e.g. `C:\Program Files\opencv\build\x64\vc15`)_
+
+Add the following entry to your `PATH` environment variable: `%OPENCV_DIR%\bin`
+
+> Environment variables can be set under `Control Panel\System and Security\System\Advanced System Settings\Environment Variables...`.
+
+The Visual Studio project will use the OpenCV install specified by your `OPENCV_DIR` environment variable.
+
 ## Image Recognition
 * OpenCV Install: https://opencv.org/releases/
 * Setting up OpenCV with Visual Studio 2017 (Windows): https://www.youtube.com/watch?v=Oi3HaBH8RC4
