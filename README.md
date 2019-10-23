@@ -69,7 +69,7 @@ The Visual Studio project will use the OpenCV install specified by your `OPENCV_
 * OpenCV 4.1.1 Tutorial: https://docs.opencv.org/4.1.1/d9/df8/tutorial_root.html 
 
 ## Communication / Drone Control
-* Installing Python 2.7: https://www.python.org/downloads/release/python-2716/
+* Installing Python 2.7: https://www.anaconda.com/distribution/#download-section
 * Beginner friendly Python IDE: https://thonny.org/
 * Dronekit documentation: https://dronekit.netlify.com/
 * Data transmission system: https://github.com/rodizio1/EZ-WifiBroadcast
