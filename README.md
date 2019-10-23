@@ -2,6 +2,46 @@
 # HexControl1920
 Control Team Files for Project Hex 19/20
 
+# Objectives
+
+## Image Recognition
+
+### Research
+* What programming language should we use? (C++ or Rust?)
+* How can we do it? (OpenCV?)
+* How efficient is it? (Can it run on a pi?)
+
+### Tasks
+* 4 Ground Markers each with its own alphanumeric character (possibly color too)
+* Must report back to the ground station the GPS co-ordinates, colour of the inner square and the alphanumeric character.
+
+### How?
+* Corner Detection?
+* Edge Detection? (Last year's method)
+* Color-filtering?
+* Other options?
+
+## Communication
+
+### Research
+
+* What programming language should we use? (python, c++ or mavlink commands?)
+* How can we do it? (Mission planner auto or Direct MAVlink command)
+* What hardware do we need? (Network cards)
+
+### Tasks
+
+#### Core Mission Tasks
+* Take-off
+* Navigation and Cargo Delivery
+* Return and Landing
+* Option to replete cargo
+
+#### Optional Mission Tasks
+* Speed Trial
+* Ground Marker Identification
+* Area Search
+
 # Getting Started
 
 ## Image Recognition
@@ -10,7 +50,7 @@ Control Team Files for Project Hex 19/20
 * Setting up OpenCV with Xcode (Mac): https://www.youtube.com/watch?v=o62iO8SssZk
 * OpenCV 4.1.1 Tutorial: https://docs.opencv.org/4.1.1/d9/df8/tutorial_root.html 
 
-## Communication
+## Communication / Drone Control
 * Installing Python 2.7: https://www.python.org/downloads/release/python-2716/
 * Beginner friendly Python IDE: https://thonny.org/
 * Dronekit documentation: https://dronekit.netlify.com/
@@ -27,3 +67,5 @@ Control Team Files for Project Hex 19/20
 
 ## Research & Examples
 * https://www.pyimagesearch.com/2015/05/04/target-acquired-finding-targets-in-drone-and-quadcopter-video-streams-using-python-and-opencv/
+* https://users.rust-lang.org/t/computer-vision-in-rust/16198/4
+* https://github.com/mavlink/rust-mavlink
