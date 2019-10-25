@@ -69,11 +69,22 @@ The Visual Studio project will use the OpenCV install specified by your `OPENCV_
 * OpenCV 4.1.1 Tutorial: https://docs.opencv.org/4.1.1/d9/df8/tutorial_root.html 
 
 ## Communication / Drone Control
-* Installing Python 2.7: https://www.anaconda.com/distribution/#download-section
+
+Install Python 2.7 from the [anaconda website](https://www.anaconda.com/distribution/#download-section). 
+
+Once installed, run the anaconda navigator, go to environments and create a new environment, making sure that Python 2.7 is selected.
+
+[Dronekit guide on an ubuntu VM](https://www.youtube.com/watch?v=TFDWs_DG2QY&list=PLuteWQUGtU9BcXXr3jCG00uVXFwQJkLRa&index=1).
+
+[Mission Planner Install](http://ardupilot.org/planner/).
+
 * Beginner friendly Python IDE: https://thonny.org/
 * Dronekit documentation: https://dronekit.netlify.com/
 * Data transmission system: https://github.com/rodizio1/EZ-WifiBroadcast
 * Alternatively: https://github.com/HD-Fpv/Open.HD/wiki
+
+## Antenna Tracker
+* Setting up an antenna tracker: http://ardupilot.org/antennatracker/index.html
 
 ## General Guides & Info
 * UAS Challenge Rules and Guidelines: https://www.imeche.org/events/challenges/uas-challenge/team-resources/challenge-document-library
