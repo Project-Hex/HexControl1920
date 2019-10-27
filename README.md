@@ -110,6 +110,7 @@ Check out the dronekit examples on this repo.
 ## Antenna Tracker
 * Setting up an antenna tracker: http://ardupilot.org/antennatracker/index.html
 * Forum post: https://www.rcgroups.com/forums/showthread.php?2942118-Build-a-Reliable-and-Cheap-Antenna-Tracker-this-Weekend-%C2%96-by-zs6buj
+* Git: https://github.com/zs6buj/AntTracker
 
 ## General Guides & Info
 * UAS Challenge Rules and Guidelines: https://www.imeche.org/events/challenges/uas-challenge/team-resources/challenge-document-library
