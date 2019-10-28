@@ -95,7 +95,7 @@ C:/Projects/Anaconda/envs/Hex/python.exe
 ```
 Test if it worked by running:
 ```python
-import dronekit
+import dronekit, dronekit_sitl
 ```
 If it executed with no problems then you're ready to start writing dronekit programs!
 
