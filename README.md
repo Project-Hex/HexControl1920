@@ -7,8 +7,10 @@ Control Team Files for Project Hex 19/20
 ## Image Recognition
 
 ### Goals
-* Make different test images
+* Make different multi-colored test images
 * Start developing based on test images
+* Try different color detection methods and save results
+* Try different target detection methods and save results
 
 ### Tasks
 * 4 Ground Markers each with its own alphanumeric character (possibly color too)
@@ -25,6 +27,8 @@ Control Team Files for Project Hex 19/20
 ### Goals
 * Start using python and dronekit
 * Start researching appropriate hardware
+* Simple take-off and land
+* Simple go to
 
 ### Tasks
 
@@ -124,5 +128,3 @@ Check out the dronekit examples on this repo.
 
 ## Research & Examples
 * https://www.pyimagesearch.com/2015/05/04/target-acquired-finding-targets-in-drone-and-quadcopter-video-streams-using-python-and-opencv/
-* https://users.rust-lang.org/t/computer-vision-in-rust/16198/4
-* https://github.com/mavlink/rust-mavlink
