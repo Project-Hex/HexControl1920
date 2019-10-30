@@ -68,6 +68,7 @@ The Visual Studio project will use the OpenCV install specified by your `OPENCV_
 * Setting up OpenCV with Visual Studio 2017 (Windows): https://www.youtube.com/watch?v=Oi3HaBH8RC4
 * Setting up OpenCV with Xcode (Mac): https://www.youtube.com/watch?v=o62iO8SssZk
 * OpenCV 4.1.1 Tutorial: https://docs.opencv.org/4.1.1/d9/df8/tutorial_root.html 
+* opencv c++ image display source code:https://docs.opencv.org/2.4/doc/tutorials/introduction/display_image/display_image.html
 
 ## Communication / Drone Control
 
