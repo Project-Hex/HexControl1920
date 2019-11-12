@@ -2,6 +2,16 @@
 # HexControl1920
 Control Team Files for Project Hex 19/20
 
+## TO-DO
+* Color detection
+* Template matching
+* OCR
+* Find suitable communication system
+* Look at onboard computers & cameras
+* Uploading missions
+* Prepare drone for testflights
+
+
 # Objectives
 ![img](https://github.com/3888winner/HexControl1920/blob/master/Mission.PNG?raw=true)
 ## Image Recognition
