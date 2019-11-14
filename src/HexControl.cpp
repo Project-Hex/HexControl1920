@@ -1,46 +1,231 @@
-// HexControl.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
-
-//#include <iostream>
-//
-//int main()
-//{
-//    std::cout << "Hello World!\n";
-//}
-
 #include <opencv2/core.hpp>
 #include <opencv2/imgcodecs.hpp>
+#include <opencv2/imgproc.hpp>
 #include <opencv2/highgui.hpp>
 #include <iostream>
+#include <stdarg.h>
 using namespace cv;
 using namespace std;
+
+struct Mask
+{
+	/// <summary>
+	/// The name of the colour filtered by this mask.
+	/// </summary>
+	string colour;
+	/// <summary>
+	/// The high colour filter's colour range.
+	/// </summary>
+	pair<Scalar, Scalar> highMask;
+	/// <summary>
+	/// The low colour filter's colour range.
+	/// </summary>
+	pair<Scalar, Scalar> lowMask;
+
+public:
+	Mask(string name, pair<Scalar, Scalar> highColourRange, pair<Scalar, Scalar> lowColourRange)
+		: colour(name), highMask(highColourRange), lowMask(lowColourRange) { }
+
+	/// <summary>
+	/// Renders the colour mask for the specified source image.
+	/// </summary>
+	void render(InputArray src, Mat& mask, Mat& out)
+	{
+		Mat mask_high, mask_low;
+		inRange(src, highMask.first, highMask.second, mask_high);
+		inRange(src, lowMask.first, lowMask.second, mask_low);
+
+		mask = mask_high + mask_low;
+		bitwise_or(src, src, out, mask);
+	}
+};
+
+#pragma region Functions
+static void getColourMasks(InputArray src, vector<Mask> maskDefinitions, vector<Mat>& masks, vector<Mat>& outs);
+static void drawAllContours(InputOutputArray& image, InputArrayOfArrays contours, InputArray hierarchy, int thickness = 1, int lineType = LINE_8);
+static bool isProminentRectangularContour(vector<Point> contour);
+static void cropAndStraigthen(RotatedRect bounds, InputArray input, Mat& output);
+#pragma endregion
+
+#pragma region Helpers
+static void createWindow(String name, InputArray& image);
+static void createWindow(String name, InputArray& image, int width, int height);
+static double angle(Point pt1, Point pt2, Point pt0);
+#pragma endregion
+
 int main(int argc, char** argv)
 {
+	#pragma region Input
+	// Check for valid argument count
 	if (argc != 2)
 	{
-		cout << " Usage: display_image ImageToLoadAndDisplay" << endl;
+		cout << " Usage: HexControl.exe image" << endl;
 		return -1;
 	}
-	Mat image;
-	image = imread(argv[1], IMREAD_COLOR); // Read the file
-	if (image.empty()) // Check for invalid input
+
+	// Read input file
+	Mat src = imread(argv[1], IMREAD_COLOR);
+	// Check for invalid input
+	if (src.empty())
 	{
-		cout << "Could not open or find the image" << std::endl;
+		cout << "Could not open or find the image" << endl;
 		return -1;
 	}
-	namedWindow("Display window", WINDOW_AUTOSIZE); // Create a window for display.
-	imshow("Display window", image); // Show our image inside it.
-	waitKey(0); // Wait for a keystroke in the window
+	#pragma endregion
+
+	// Convert image to HSV color space for easier processing with masks.
+	Mat hsvSrc; cvtColor(src, hsvSrc, COLOR_BGR2HSV);
+
+	// Define multiple colour masks that are each used to detect a prominent single blob of homogenous color with a rectangular shape.
+	vector<Mask> maskDefintions = {
+		Mask("Red", pair<Scalar, Scalar>(Scalar(0, 96, 70), Scalar(20, 255, 255)), pair<Scalar, Scalar>(Scalar(160, 96, 70), Scalar(180, 255, 255)))
+	};
+	vector<Mat> masks, maskedImages; getColourMasks(hsvSrc, maskDefintions, masks, maskedImages);
+
+	// TODO: Make rest of code a proper iteration over all masks.
+	Mat mask = *masks.begin();
+
+	// Detect edges
+	Mat edges; Canny(mask, edges, 100, 200, 3);
+	// Find contours
+	vector<vector<Point>> contours;
+	vector<Vec4i> hierarchy;
+	findContours(edges, contours, hierarchy, RETR_TREE, CHAIN_APPROX_SIMPLE, Point(0, 0));
+
+	// Draw contours
+	Mat drawing = Mat::zeros(edges.size(), CV_8UC3); drawAllContours(drawing, contours, hierarchy, 8);
+
+	/*vector<Point> prominentContour =
+		*std::max_element(contours.begin(), contours.end(),
+			[](vector<Point> a, vector<Point> b) { return contourArea(a) < contourArea(b); });
+	Scalar color = Scalar(rng.uniform(0, 255), rng.uniform(0, 255), rng.uniform(0, 255));
+	drawContours(drawing, vector<vector<Point>>{ prominentContour }, 0, color, 24, LINE_8, hierarchy, 0, Point());*/
+
+	// Find the most prominent rectangular contour, and crop, and straighten the image to its bounds.
+	Mat cropped;
+	for (int i = 0; i < contours.size(); i++)
+	{
+		if (isProminentRectangularContour(contours[i]))
+		{
+			RotatedRect bounds = minAreaRect(contours[i]);
+			cropAndStraigthen(bounds, mask, cropped);
+		}
+	}
+
+	// Display images
+	createWindow("Input",    src,     1024, 768);
+	createWindow("Contours", drawing, 1024, 768);
+	createWindow("Crop",     cropped);
+
+	waitKey(0);
 	return 0;
 }
 
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
+#pragma region Functions
+/// <summary>
+/// Renders each colour mask for the specified source image.
+/// </summary>
+static void getColourMasks(InputArray src, vector<Mask> maskDefinitions, vector<Mat>& masks, vector<Mat>& outs)
+{
+	vector<Mat> _masks, _outs;
 
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
+	for (int i = 0; i < maskDefinitions.size(); i++)
+	{
+		Mat mask, out;
+		maskDefinitions[i].render(src, mask, out);
+		_masks.push_back(mask);
+		_outs.push_back(out);
+	}
+
+	masks = _masks; outs = _outs;
+}
+
+/// <summary>
+/// Draws an entire array of contours with the specified options.
+/// </summary>
+static void drawAllContours(InputOutputArray& image, InputArrayOfArrays contours, InputArray hierarchy, int thickness, int lineType)
+{
+	RNG rng = RNG();
+	Scalar colour;
+
+	for (int i = 0; i < contours.size().width; i++)
+	{
+		colour = Scalar(rng.uniform(0, 255), rng.uniform(0, 255), rng.uniform(0, 255));
+		drawContours(image, contours, i, colour, thickness, lineType, hierarchy, 0, Point());
+	}
+}
+
+/// <summary>
+/// Returns wether a contour defines a prominent, rectangular shape.
+/// </summary>
+static bool isProminentRectangularContour(vector<Point> contour)
+{
+	// Approximate contours to polygons
+	vector<Point> approx;
+	approxPolyDP(Mat(contour), approx, arcLength(Mat(contour), true) * 0.02, true);
+	// Filter small contours
+	if (fabs(contourArea(contour)) < 100 || !isContourConvex(approx)) return false;
+
+	// Store the approximation polygons' number of verticies
+	int nVerticies = approx.size();
+	// Return if not quadrilateral
+	if (nVerticies != 4) return false;
+
+	// Get cosines of polygon
+	vector<double> cos;
+	for (int j = 2; j < nVerticies + 1; j++)
+		cos.push_back(angle(approx[j % nVerticies], approx[j - 2], approx[j - 1]));
+	auto minmaxcos = std::minmax_element(cos.begin(), cos.end());
+	auto mincos = *minmaxcos.first; auto maxcos = *minmaxcos.second;
+
+	// Check for rectangular contour
+	return mincos >= -0.1 && maxcos <= 0.3;
+}
+
+/// <summary>
+/// Transforms the source image and retreieves from it the area specified by the rotated rectangle bounds.
+/// </summary>
+static void cropAndStraigthen(RotatedRect bounds, InputArray input, Mat& output)
+{
+	float angle = bounds.angle;
+	Size size = bounds.size;
+
+	if (bounds.angle < -45.) {
+		angle += 90.0;
+		swap(size.width, size.height);
+	}
+	Mat rotationMatrix = getRotationMatrix2D(bounds.center, angle, 1.0);
+	// Perform the affine transformation on the original image
+	Mat rotated; warpAffine(input, rotated, rotationMatrix, input.size(), INTER_CUBIC);
+	// Crop the rotated image to the original bounds
+	Mat cropped; getRectSubPix(rotated, size, bounds.center, cropped);
+
+	output = cropped;
+}
+#pragma endregion
+
+#pragma region Helpers
+/// <summary>
+/// Creates a new window with the specified name, and displays the image on it.
+/// </summary>
+static void createWindow(String name, InputArray& image)
+{
+	namedWindow(name, WINDOW_KEEPRATIO);
+	imshow(name, image);
+}
+/// <summary>
+/// Creates a new window with the specified name, and size, and displays the image on it.
+/// </summary>
+static void createWindow(String name, InputArray& image, int width, int height)
+{
+	createWindow(name, image);
+	resizeWindow(name, width, height);
+}
+
+static double angle(Point pt1, Point pt2, Point pt0)
+{
+	double dx1 = pt1.x - pt0.x, dy1 = pt1.y - pt0.y;
+	double dx2 = pt2.x - pt0.x, dy2 = pt2.y - pt0.y;
+	return (dx1 * dx2 + dy1 * dy2) / sqrt((dx1 * dx1 + dy1 * dy1) * (dx2 * dx2 + dy2 * dy2) + 1e-10);
+}
+#pragma endregion
