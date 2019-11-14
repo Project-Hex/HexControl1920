@@ -95,12 +95,6 @@ int main(int argc, char** argv)
 	// Draw contours
 	Mat drawing = Mat::zeros(edges.size(), CV_8UC3); drawAllContours(drawing, contours, hierarchy, 8);
 
-	/*vector<Point> prominentContour =
-		*std::max_element(contours.begin(), contours.end(),
-			[](vector<Point> a, vector<Point> b) { return contourArea(a) < contourArea(b); });
-	Scalar color = Scalar(rng.uniform(0, 255), rng.uniform(0, 255), rng.uniform(0, 255));
-	drawContours(drawing, vector<vector<Point>>{ prominentContour }, 0, color, 24, LINE_8, hierarchy, 0, Point());*/
-
 	// Find the most prominent rectangular contour, and crop, and straighten the image to its bounds.
 	Mat cropped;
 	for (int i = 0; i < contours.size(); i++)
