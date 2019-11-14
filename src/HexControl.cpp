@@ -4,41 +4,9 @@
 #include <opencv2/highgui.hpp>
 #include <iostream>
 #include <stdarg.h>
+#include "Mask.h"
 using namespace cv;
 using namespace std;
-
-struct Mask
-{
-	/// <summary>
-	/// The name of the colour filtered by this mask.
-	/// </summary>
-	string colour;
-	/// <summary>
-	/// The high colour filter's colour range.
-	/// </summary>
-	pair<Scalar, Scalar> highMask;
-	/// <summary>
-	/// The low colour filter's colour range.
-	/// </summary>
-	pair<Scalar, Scalar> lowMask;
-
-public:
-	Mask(string name, pair<Scalar, Scalar> highColourRange, pair<Scalar, Scalar> lowColourRange)
-		: colour(name), highMask(highColourRange), lowMask(lowColourRange) { }
-
-	/// <summary>
-	/// Renders the colour mask for the specified source image.
-	/// </summary>
-	void render(InputArray src, Mat& mask, Mat& out)
-	{
-		Mat mask_high, mask_low;
-		inRange(src, highMask.first, highMask.second, mask_high);
-		inRange(src, lowMask.first, lowMask.second, mask_low);
-
-		mask = mask_high + mask_low;
-		bitwise_or(src, src, out, mask);
-	}
-};
 
 #pragma region Functions
 static void getColourMasks(InputArray src, vector<Mask> maskDefinitions, vector<Mat>& masks, vector<Mat>& outs);
