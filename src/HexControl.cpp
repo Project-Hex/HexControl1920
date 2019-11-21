@@ -55,28 +55,28 @@ int main(int argc, char** argv)
 
 	for (MaskedImage mask : masks)
 	{
-	// Detect edges
+		// Detect edges
 		Mat edges; Canny(mask.maskImage, edges, 100, 200, 3);
-	// Find contours
-	vector<vector<Point>> contours;
-	vector<Vec4i> hierarchy;
-	findContours(edges, contours, hierarchy, RETR_TREE, CHAIN_APPROX_SIMPLE, Point(0, 0));
+		// Find contours
+		vector<vector<Point>> contours;
+		vector<Vec4i> hierarchy;
+		findContours(edges, contours, hierarchy, RETR_TREE, CHAIN_APPROX_SIMPLE, Point(0, 0));
 
-	// Draw contours
-	Mat drawing = Mat::zeros(edges.size(), CV_8UC3); drawAllContours(drawing, contours, hierarchy, 8);
+		// Draw contours
+		Mat drawing = Mat::zeros(edges.size(), CV_8UC3); drawAllContours(drawing, contours, hierarchy, 8);
 
-	// Find the most prominent rectangular contour, and crop, and straighten the image to its bounds.
-	Mat cropped;
-	for (int i = 0; i < contours.size(); i++)
-	{
-		if (isProminentRectangularContour(contours[i]))
+		// Find the most prominent rectangular contour, and crop, and straighten the image to its bounds.
+		Mat cropped;
+		for (int i = 0; i < contours.size(); i++)
 		{
-			RotatedRect bounds = minAreaRect(contours[i]);
+			if (isProminentRectangularContour(contours[i]))
+			{
+				RotatedRect bounds = minAreaRect(contours[i]);
 				cropAndStraigthen(bounds, mask.maskImage, cropped);
+			}
 		}
-	}
 
-	// Display images
+		// Display images
 		createWindow("Contours - " + mask.mask.colour, drawing, 1024, 768);
 		createWindow("Crop - " + mask.mask.colour,     cropped);
 	}
