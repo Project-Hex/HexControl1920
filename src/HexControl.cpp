@@ -5,11 +5,12 @@
 #include <iostream>
 #include <stdarg.h>
 #include "Mask.h"
+#include "MaskedImage.h"
 using namespace cv;
 using namespace std;
 
 #pragma region Functions
-static void getColourMasks(InputArray src, vector<Mask> maskDefinitions, vector<Mat>& masks, vector<Mat>& outs);
+static void getColourMasks(InputArray src, vector<Mask> maskDefinitions, vector<MaskedImage>& masks);
 static void drawAllContours(InputOutputArray& image, InputArrayOfArrays contours, InputArray hierarchy, int thickness = 1, int lineType = LINE_8);
 static bool isProminentRectangularContour(vector<Point> contour);
 static void cropAndStraigthen(RotatedRect bounds, InputArray input, Mat& output);
@@ -48,7 +49,7 @@ int main(int argc, char** argv)
 	vector<Mask> maskDefintions = {
 		Mask("Red", pair<Scalar, Scalar>(Scalar(0, 96, 70), Scalar(20, 255, 255)), pair<Scalar, Scalar>(Scalar(160, 96, 70), Scalar(180, 255, 255)))
 	};
-	vector<Mat> masks, maskedImages; getColourMasks(hsvSrc, maskDefintions, masks, maskedImages);
+	vector<MaskedImage> masks; getColourMasks(hsvSrc, maskDefintions, masks);
 
 	// TODO: Make rest of code a proper iteration over all masks.
 	Mat mask = *masks.begin();
@@ -87,19 +88,16 @@ int main(int argc, char** argv)
 /// <summary>
 /// Renders each colour mask for the specified source image.
 /// </summary>
-static void getColourMasks(InputArray src, vector<Mask> maskDefinitions, vector<Mat>& masks, vector<Mat>& outs)
+static void getColourMasks(InputArray src, vector<Mask> maskDefinitions, vector<MaskedImage>& masks)
 {
-	vector<Mat> _masks, _outs;
+	vector<MaskedImage> _masks;
 
 	for (int i = 0; i < maskDefinitions.size(); i++)
 	{
-		Mat mask, out;
-		maskDefinitions[i].render(src, mask, out);
-		_masks.push_back(mask);
-		_outs.push_back(out);
+		_masks.push_back(MaskedImage::fromMask(maskDefinitions[i], src));
 	}
 
-	masks = _masks; outs = _outs;
+	masks = _masks;
 }
 
 /// <summary>
