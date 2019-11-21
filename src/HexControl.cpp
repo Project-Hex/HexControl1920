@@ -42,6 +42,8 @@ int main(int argc, char** argv)
 	}
 	#pragma endregion
 
+	createWindow("Input", src, 1024, 768);
+
 	// Convert image to HSV color space for easier processing with masks.
 	Mat hsvSrc; cvtColor(src, hsvSrc, COLOR_BGR2HSV);
 
@@ -51,11 +53,10 @@ int main(int argc, char** argv)
 	};
 	vector<MaskedImage> masks; getColourMasks(hsvSrc, maskDefintions, masks);
 
-	// TODO: Make rest of code a proper iteration over all masks.
-	Mat mask = *masks.begin();
-
+	for (MaskedImage mask : masks)
+	{
 	// Detect edges
-	Mat edges; Canny(mask, edges, 100, 200, 3);
+		Mat edges; Canny(mask.maskImage, edges, 100, 200, 3);
 	// Find contours
 	vector<vector<Point>> contours;
 	vector<Vec4i> hierarchy;
@@ -71,14 +72,14 @@ int main(int argc, char** argv)
 		if (isProminentRectangularContour(contours[i]))
 		{
 			RotatedRect bounds = minAreaRect(contours[i]);
-			cropAndStraigthen(bounds, mask, cropped);
+				cropAndStraigthen(bounds, mask.maskImage, cropped);
 		}
 	}
 
 	// Display images
-	createWindow("Input",    src,     1024, 768);
-	createWindow("Contours", drawing, 1024, 768);
-	createWindow("Crop",     cropped);
+		createWindow("Contours - " + mask.mask.colour, drawing, 1024, 768);
+		createWindow("Crop - " + mask.mask.colour,     cropped);
+	}
 
 	waitKey(0);
 	return 0;
