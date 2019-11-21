@@ -49,7 +49,7 @@ int main(int argc, char** argv)
 
 	// Define multiple colour masks that are each used to detect a prominent single blob of homogenous color with a rectangular shape.
 	vector<Mask> maskDefintions = {
-		Mask("Red", pair<Scalar, Scalar>(Scalar(0, 96, 70), Scalar(20, 255, 255)), pair<Scalar, Scalar>(Scalar(160, 96, 70), Scalar(180, 255, 255)))
+		Mask("Red", pair<Scalar, Scalar>(Scalar(0, 20, 20), Scalar(20, 255, 255)), pair<Scalar, Scalar>(Scalar(160, 20, 20), Scalar(180, 255, 255)))
 	};
 	vector<MaskedImage> masks; getColourMasks(hsvSrc, maskDefintions, masks);
 
