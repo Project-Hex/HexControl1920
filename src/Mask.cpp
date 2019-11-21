@@ -1,4 +1,7 @@
+#include <opencv2/core.hpp>
 #include "Mask.h"
+using namespace std;
+using namespace cv;
 
 Mask::Mask(string name, pair<Scalar, Scalar> highColourRange, pair<Scalar, Scalar> lowColourRange)
 	: colour(name), highMask(highColourRange), lowMask(lowColourRange) { }
