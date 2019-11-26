@@ -136,6 +136,7 @@ Check out the dronekit examples on this repo.
 * Qgroundcontrol: http://qgroundcontrol.com/
 * Data transmission system: https://github.com/rodizio1/EZ-WifiBroadcast
 * Alternatively: https://github.com/HD-Fpv/Open.HD/wiki
+* PixHawk LEDs: http://ardupilot.org/copter/docs/common-leds-pixhawk.html
 
 ## Research & Examples
 * https://www.pyimagesearch.com/2015/05/04/target-acquired-finding-targets-in-drone-and-quadcopter-video-streams-using-python-and-opencv/
