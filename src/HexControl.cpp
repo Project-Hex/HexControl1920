@@ -22,6 +22,7 @@ static void createWindow(String name, InputArray& image, int width, int height);
 static double angle(Point pt1, Point pt2, Point pt0);
 #pragma endregion
 
+constexpr double imageProcessingScale = 0.2;
 constexpr double contourThicknessScale = 1;
 
 int main(int argc, char** argv)
@@ -46,8 +47,12 @@ int main(int argc, char** argv)
 
 	createWindow("Input", src, 1024, 768);
 
+    // Scale the source image down for faster processing.
+    Mat smallSrc;
+    resize(src, smallSrc, Size(), imageProcessingScale, imageProcessingScale);
+
 	// Convert image to HSV color space for easier processing with masks.
-	Mat hsvSrc; cvtColor(src, hsvSrc, COLOR_BGR2HSV);
+	Mat hsvSrc; cvtColor(smallSrc, hsvSrc, COLOR_BGR2HSV);
 
 	// Define multiple colour masks that are each used to detect a prominent single blob of homogenous color with a rectangular shape.
 	vector<Mask> maskDefintions = {
