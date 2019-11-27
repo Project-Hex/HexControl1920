@@ -10,6 +10,7 @@ using namespace cv;
 using namespace std;
 
 #pragma region Functions
+static void processFrame(InputArray src, vector<Mask>& maskDefinitions);
 static void getColourMasks(InputArray src, vector<Mask> maskDefinitions, vector<MaskedImage>& masks);
 static void drawAllContours(InputOutputArray& image, InputArrayOfArrays contours, InputArray hierarchy, int thickness = 1, int lineType = LINE_8);
 static bool isProminentRectangularContour(vector<Point> contour);
@@ -45,15 +46,6 @@ int main(int argc, char** argv)
 	}
 	#pragma endregion
 
-	createWindow("Input", src, 1024, 768);
-
-    // Scale the source image down for faster processing.
-    Mat smallSrc;
-    resize(src, smallSrc, Size(), imageProcessingScale, imageProcessingScale);
-
-	// Convert image to HSV color space for easier processing with masks.
-	Mat hsvSrc; cvtColor(smallSrc, hsvSrc, COLOR_BGR2HSV);
-
 	// Define multiple colour masks that are each used to detect a prominent single blob of homogenous color with a rectangular shape.
 	vector<Mask> maskDefintions = {
 		Mask("Red",         pair<Scalar, Scalar>(Scalar(  0, 20, 20), Scalar( 16, 255, 255)), pair<Scalar, Scalar>(Scalar(164, 20, 20), Scalar(180, 255, 255))),
@@ -65,7 +57,23 @@ int main(int argc, char** argv)
         Mask("Purple",      pair<Scalar, Scalar>(Scalar(128, 20, 20), Scalar(155, 255, 255)), pair<Scalar, Scalar>(Scalar(128, 20, 20), Scalar(155, 255, 255))),
         Mask("Magenta",     pair<Scalar, Scalar>(Scalar(140, 20, 20), Scalar(165, 255, 255)), pair<Scalar, Scalar>(Scalar(140, 20, 20), Scalar(165, 255, 255)))
 	};
-	vector<MaskedImage> masks; getColourMasks(hsvSrc, maskDefintions, masks);
+
+    processFrame(src, maskDefintions);
+
+	waitKey(0);
+	return 0;
+}
+
+#pragma region Functions
+static void processFrame(InputArray src, vector<Mask>& maskDefinitions)
+{
+    // Scale the source image down for faster processing.
+    Mat smallSrc; resize(src, smallSrc, Size(), imageProcessingScale, imageProcessingScale);
+
+    // Convert image to HSV color space for easier processing with masks.
+    Mat hsvSrc; cvtColor(smallSrc, hsvSrc, COLOR_BGR2HSV);
+
+    vector<MaskedImage> masks; getColourMasks(hsvSrc, maskDefinitions, masks);
 
 	for (MaskedImage mask : masks)
 	{
@@ -107,12 +115,8 @@ int main(int argc, char** argv)
 		createWindow("Contours - " + mask.mask.colour, drawing, 1024, 768);
 		createWindow("Crop - " + mask.mask.colour,     cropped);
 	}
-
-	waitKey(0);
-	return 0;
 }
 
-#pragma region Functions
 /// <summary>
 /// Renders each colour mask for the specified source image.
 /// </summary>
