@@ -125,9 +125,7 @@ static void getColourMasks(InputArray src, vector<Mask> maskDefinitions, vector<
 	vector<MaskedImage> _masks;
 
 	for (int i = 0; i < maskDefinitions.size(); i++)
-	{
 		_masks.push_back(MaskedImage::fromMask(maskDefinitions[i], src));
-	}
 
 	masks = _masks;
 }
