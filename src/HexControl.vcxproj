@@ -108,6 +108,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -153,11 +154,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="FrameResult.cpp" />
     <ClCompile Include="HexControl.cpp" />
     <ClCompile Include="Mask.cpp" />
     <ClCompile Include="MaskedImage.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="FrameResult.h" />
     <ClInclude Include="Mask.h" />
     <ClInclude Include="MaskedImage.h" />
   </ItemGroup>

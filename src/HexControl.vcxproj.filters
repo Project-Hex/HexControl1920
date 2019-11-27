@@ -24,12 +24,18 @@
     <ClCompile Include="MaskedImage.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="FrameResult.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Mask.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="MaskedImage.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FrameResult.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

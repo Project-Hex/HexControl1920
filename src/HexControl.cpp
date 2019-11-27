@@ -4,13 +4,15 @@
 #include <opencv2/highgui.hpp>
 #include <iostream>
 #include <stdarg.h>
+#include <optional>
 #include "Mask.h"
 #include "MaskedImage.h"
+#include "FrameResult.h"
 using namespace cv;
 using namespace std;
 
 #pragma region Functions
-static void processFrame(InputArray src, vector<Mask>& maskDefinitions);
+static optional<FrameResult> processFrame(InputArray src, vector<Mask>& maskDefinitions);
 static void getColourMasks(InputArray src, vector<Mask> maskDefinitions, vector<MaskedImage>& masks);
 static void drawAllContours(InputOutputArray& image, InputArrayOfArrays contours, InputArray hierarchy, int thickness = 1, int lineType = LINE_8);
 static bool isProminentRectangularContour(vector<Point> contour);
@@ -63,8 +65,15 @@ int main(int argc, char** argv)
 
         // Display the current frame.
         imshow("Video", frame);
+
         // Process the current frame.
-        processFrame(frame, maskDefintions);
+        auto result = processFrame(frame, maskDefintions);
+
+        if (result.has_value())
+        {
+            createWindow("Contours - " + result->colour, result->contours, 1024, 768);
+            createWindow("Crop - " + result->colour, result->result);
+        }
 
         // Close on `Escape` key press.
         char c = (char)waitKey(1);
@@ -78,7 +87,7 @@ int main(int argc, char** argv)
 }
 
 #pragma region Functions
-static void processFrame(InputArray src, vector<Mask>& maskDefinitions)
+static optional<FrameResult> processFrame(InputArray src, vector<Mask>& maskDefinitions)
 {
     // Scale the source image down for faster processing.
     Mat smallSrc; resize(src, smallSrc, Size(), imageProcessingScale, imageProcessingScale);
@@ -121,13 +130,11 @@ static void processFrame(InputArray src, vector<Mask>& maskDefinitions)
 			}
 		}
 
-        if (nProminentContours == 0)
-            continue;
+        if (nProminentContours >= 1)
+            return optional<FrameResult>(FrameResult(src.getMat(), mask.mask.colour, drawing, cropped));
+    }
 
-		// Display images
-		createWindow("Contours - " + mask.mask.colour, drawing, 1024, 768);
-		createWindow("Crop - " + mask.mask.colour,     cropped);
-	}
+    return nullopt;
 }
 
 /// <summary>
