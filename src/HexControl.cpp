@@ -56,7 +56,14 @@ int main(int argc, char** argv)
 
 	// Define multiple colour masks that are each used to detect a prominent single blob of homogenous color with a rectangular shape.
 	vector<Mask> maskDefintions = {
-		Mask("Red", pair<Scalar, Scalar>(Scalar(0, 20, 20), Scalar(20, 255, 255)), pair<Scalar, Scalar>(Scalar(160, 20, 20), Scalar(180, 255, 255)))
+		Mask("Red",         pair<Scalar, Scalar>(Scalar(  0, 20, 20), Scalar( 16, 255, 255)), pair<Scalar, Scalar>(Scalar(164, 20, 20), Scalar(180, 255, 255))),
+        Mask("Orange",      pair<Scalar, Scalar>(Scalar( 12, 20, 20), Scalar( 24, 255, 255)), pair<Scalar, Scalar>(Scalar( 12, 20, 20), Scalar( 24, 255, 255))),
+        Mask("Yellow",      pair<Scalar, Scalar>(Scalar( 24, 20, 20), Scalar( 32, 255, 255)), pair<Scalar, Scalar>(Scalar( 24, 20, 20), Scalar( 32, 255, 255))),
+        //Mask("Green",       pair<Scalar, Scalar>(Scalar( 32, 20, 20), Scalar( 75, 255, 255)), pair<Scalar, Scalar>(Scalar( 32, 20, 20), Scalar( 75, 255, 255))),
+        Mask("LightBlue",   pair<Scalar, Scalar>(Scalar( 75, 20, 20), Scalar(105, 255, 255)), pair<Scalar, Scalar>(Scalar( 75, 20, 20), Scalar(105, 255, 255))),
+        Mask("DarkBlue",    pair<Scalar, Scalar>(Scalar(105, 20, 20), Scalar(130, 255, 255)), pair<Scalar, Scalar>(Scalar(105, 20, 20), Scalar(130, 255, 255))),
+        Mask("Purple",      pair<Scalar, Scalar>(Scalar(128, 20, 20), Scalar(155, 255, 255)), pair<Scalar, Scalar>(Scalar(128, 20, 20), Scalar(155, 255, 255))),
+        Mask("Magenta",     pair<Scalar, Scalar>(Scalar(140, 20, 20), Scalar(165, 255, 255)), pair<Scalar, Scalar>(Scalar(140, 20, 20), Scalar(165, 255, 255)))
 	};
 	vector<MaskedImage> masks; getColourMasks(hsvSrc, maskDefintions, masks);
 
