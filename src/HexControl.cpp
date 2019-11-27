@@ -22,6 +22,8 @@ static void createWindow(String name, InputArray& image, int width, int height);
 static double angle(Point pt1, Point pt2, Point pt0);
 #pragma endregion
 
+constexpr double contourThicknessScale = 1;
+
 int main(int argc, char** argv)
 {
 	#pragma region Input
@@ -63,7 +65,7 @@ int main(int argc, char** argv)
 		findContours(edges, contours, hierarchy, RETR_TREE, CHAIN_APPROX_SIMPLE, Point(0, 0));
 
 		// Draw contours
-		Mat drawing = Mat::zeros(edges.size(), CV_8UC3); drawAllContours(drawing, contours, hierarchy, 8);
+		Mat drawing = Mat::zeros(edges.size(), CV_8UC3); drawAllContours(drawing, contours, hierarchy, contourThicknessScale * 2);
 
 		// Find the most prominent rectangular contour, and crop, and straighten the image to its bounds.
 		Mat cropped;
@@ -71,6 +73,8 @@ int main(int argc, char** argv)
 		{
 			if (isProminentRectangularContour(contours[i]))
 			{
+                drawAllContours(drawing, vector<vector<Point>>{ contours[i] }, hierarchy, contourThicknessScale * 4);
+
 				RotatedRect bounds = minAreaRect(contours[i]);
 				cropAndStraigthen(bounds, mask.maskImage, cropped);
 			}
