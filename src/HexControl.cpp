@@ -68,7 +68,7 @@ int main(int argc, char** argv)
 		Mat drawing = Mat::zeros(edges.size(), CV_8UC3); drawAllContours(drawing, contours, hierarchy, contourThicknessScale * 2);
 
 		// Find the most prominent rectangular contour, and crop, and straighten the image to its bounds.
-		Mat cropped;
+        Mat cropped; int nProminentContours = 0;
 		for (int i = 0; i < contours.size(); i++)
 		{
 			if (isProminentRectangularContour(contours[i]))
@@ -77,8 +77,13 @@ int main(int argc, char** argv)
 
 				RotatedRect bounds = minAreaRect(contours[i]);
 				cropAndStraigthen(bounds, mask.maskImage, cropped);
+
+                nProminentContours++;
 			}
 		}
+
+        if (nProminentContours == 0)
+            continue;
 
 		// Display images
 		createWindow("Contours - " + mask.mask.colour, drawing, 1024, 768);
