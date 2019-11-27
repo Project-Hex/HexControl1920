@@ -29,19 +29,13 @@ constexpr double contourThicknessScale = 1;
 int main(int argc, char** argv)
 {
 	#pragma region Input
-	// Check for valid argument count
-	if (argc != 2)
-	{
-		cout << " Usage: HexControl.exe image" << endl;
-		return -1;
-	}
+    // Create the video capture feed for interacting with the camera.
+    VideoCapture video(0);
 
-	// Read input file
-	Mat src = imread(argv[1], IMREAD_COLOR);
-	// Check for invalid input
-	if (src.empty())
+    // Check if the camera has been opened successfully.
+    if (!video.isOpened())
 	{
-		cout << "Could not open or find the image" << endl;
+        cout << "Error opening video stream or file" << endl;
 		return -1;
 	}
 	#pragma endregion
@@ -58,9 +52,28 @@ int main(int argc, char** argv)
         Mask("Magenta",     pair<Scalar, Scalar>(Scalar(140, 20, 20), Scalar(165, 255, 255)), pair<Scalar, Scalar>(Scalar(140, 20, 20), Scalar(165, 255, 255)))
 	};
 
-    processFrame(src, maskDefintions);
+    namedWindow("Video");
 
-	waitKey(0);
+    // Video Processing Loop
+    while (1)
+    {
+        // Take the current frame of the video feed.
+        Mat frame; video >> frame;
+        if (frame.empty()) break;
+
+        // Display the current frame.
+        imshow("Video", frame);
+        // Process the current frame.
+        processFrame(frame, maskDefintions);
+
+        // Close on `Escape` key press.
+        char c = (char)waitKey(1);
+        if (c == 27) break;
+    }
+
+    // Clean up resources.
+    video.release();
+    destroyAllWindows();
 	return 0;
 }
 
