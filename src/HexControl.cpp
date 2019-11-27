@@ -111,7 +111,7 @@ static void drawAllContours(InputOutputArray& image, InputArrayOfArrays contours
 
 	for (int i = 0; i < contours.size().width; i++)
 	{
-		colour = Scalar(rng.uniform(0, 255), rng.uniform(0, 255), rng.uniform(0, 255));
+		colour = Scalar(rng.uniform(50, 255), rng.uniform(50, 255), rng.uniform(50, 255));
 		drawContours(image, contours, i, colour, thickness, lineType, hierarchy, 0, Point());
 	}
 }
