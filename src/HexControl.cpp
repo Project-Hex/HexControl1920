@@ -64,6 +64,12 @@ int main(int argc, char** argv)
 		vector<Vec4i> hierarchy;
 		findContours(edges, contours, hierarchy, RETR_TREE, CHAIN_APPROX_SIMPLE, Point(0, 0));
 
+        for (int i = 0; i < contours.size(); i++)
+        {
+            if (fabs(contourArea(contours[i])) < 100)
+                contours.erase(contours.begin() + i);
+        }
+
 		// Draw contours
 		Mat drawing = Mat::zeros(edges.size(), CV_8UC3); drawAllContours(drawing, contours, hierarchy, contourThicknessScale * 2);
 
