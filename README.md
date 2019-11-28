@@ -2,16 +2,6 @@
 # HexControl1920
 Control Team Files for Project Hex 19/20
 
-## TO-DO
-* Color detection
-* Template matching
-* OCR
-* Find suitable communication system
-* Look at onboard computers & cameras
-* Uploading missions
-* Prepare drone for testflights
-
-
 # Objectives
 ![img](https://github.com/3888winner/HexControl1920/blob/master/Mission.PNG?raw=true)
 ## Image Recognition
@@ -51,7 +41,12 @@ Control Team Files for Project Hex 19/20
 #### Optional Mission Tasks
 * Speed Trial
 * Ground Marker Identification
-* Area Search
+* Area Search (Rectangular Area)
+
+#### Route distances
+The organisers will provide details of the routes from the Launch Point to the Drop Zone at the start of the demonstration event; as guidance for the teams, the approximate distances are expected to be:
+Route A: 4.0 km; Route B: 2.5 km; Route C:1.5 km
+The distance from the Drop Zone back to the Launch Point is expected to be less than 0.5 km. All distances quoted are the straight-line distances between Waypoints, and do not account for positioning manoeuvres or turn radii. 
 
 # Getting Started
 
