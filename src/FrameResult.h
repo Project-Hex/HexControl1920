@@ -8,11 +8,14 @@ struct FrameResult
 {
     Mat src;
 
+    vector<Vec4i> hierarchy;
+    vector<vector<Point>> contours;
+    vector<Point> prominentContour;
+    Size processingSize;
+
     string colour;
-    Mat contours;
     Mat result;
 
 public:
-    FrameResult(Mat src, string colour, Mat contours, Mat result);
+    FrameResult(Mat src, string colour, Mat result, vector<Vec4i> hierarchy, vector<vector<Point>> contours, vector<Point> prominentContour, Size processingSize);
 };
-

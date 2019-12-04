@@ -4,5 +4,5 @@
 using namespace std;
 using namespace cv;
 
-FrameResult::FrameResult(Mat src, string colour, Mat contours, Mat result)
-    : src(src), colour(colour), contours(contours), result(result) { }
+FrameResult::FrameResult(Mat src, string colour, Mat result, vector<Vec4i> hierarchy, vector<vector<Point>> contours, vector<Point> prominentContour, Size processingSize)
+    : src(src), colour(colour), result(result), hierarchy(hierarchy), contours(contours), prominentContour(prominentContour), processingSize(processingSize) { }

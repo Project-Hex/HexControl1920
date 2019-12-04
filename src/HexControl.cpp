@@ -13,6 +13,7 @@ using namespace std;
 
 #pragma region Functions
 static optional<FrameResult> processFrame(InputArray src, vector<Mask>& maskDefinitions);
+static void display(InputArray src, optional<FrameResult> frame);
 static void getColourMasks(InputArray src, vector<Mask> maskDefinitions, vector<MaskedImage>& masks);
 static void drawAllContours(InputOutputArray& image, InputArrayOfArrays contours, InputArray hierarchy, int thickness = 1, int lineType = LINE_8);
 static bool isProminentRectangularContour(vector<Point> contour);
@@ -54,8 +55,6 @@ int main(int argc, char** argv)
         Mask("Magenta",     pair<Scalar, Scalar>(Scalar(140, 20, 20), Scalar(165, 255, 255)), pair<Scalar, Scalar>(Scalar(140, 20, 20), Scalar(165, 255, 255)))
 	};
 
-    namedWindow("Video");
-
     // Video Processing Loop
     while (1)
     {
@@ -63,17 +62,11 @@ int main(int argc, char** argv)
         Mat frame; video >> frame;
         if (frame.empty()) break;
 
-        // Display the current frame.
-        imshow("Video", frame);
-
         // Process the current frame.
         auto result = processFrame(frame, maskDefintions);
 
-        if (result.has_value())
-        {
-            createWindow("Contours - " + result->colour, result->contours, 1024, 768);
-            createWindow("Crop - " + result->colour, result->result);
-        }
+        // Display the processing result.
+        display(frame, result);
 
         // Close on `Escape` key press.
         char c = (char)waitKey(1);
@@ -112,29 +105,67 @@ static optional<FrameResult> processFrame(InputArray src, vector<Mask>& maskDefi
                 contours.erase(contours.begin() + i);
         }
 
-		// Draw contours
-		Mat drawing = Mat::zeros(edges.size(), CV_8UC3); drawAllContours(drawing, contours, hierarchy, contourThicknessScale * 2);
-
 		// Find the most prominent rectangular contour, and crop, and straighten the image to its bounds.
-        Mat cropped; int nProminentContours = 0;
+        Mat cropped; optional<vector<Point>> prominentContour = nullopt;
 		for (int i = 0; i < contours.size(); i++)
 		{
 			if (isProminentRectangularContour(contours[i]))
 			{
-                drawAllContours(drawing, vector<vector<Point>>{ contours[i] }, hierarchy, contourThicknessScale * 4);
-
 				RotatedRect bounds = minAreaRect(contours[i]);
 				cropAndStraigthen(bounds, mask.maskImage, cropped);
 
-                nProminentContours++;
+                prominentContour = optional<vector<Point>>(contours[i]);
 			}
 		}
 
-        if (nProminentContours >= 1)
-            return optional<FrameResult>(FrameResult(src.getMat(), mask.mask.colour, drawing, cropped));
+        if (prominentContour.has_value())
+            return optional<FrameResult>(FrameResult(src.getMat(), mask.mask.colour, cropped, hierarchy, contours, *prominentContour, smallSrc.size()));
     }
 
     return nullopt;
+}
+
+static void display(InputArray src, optional<FrameResult> frame)
+{
+    Mat srcMat = src.getMat();
+
+    namedWindow("Frame", WINDOW_AUTOSIZE);
+
+    if (frame.has_value())
+    {
+        // Draw contours
+        Mat drawing = Mat::zeros(frame->processingSize, CV_8UC3);
+        drawAllContours(drawing, frame->contours,                                  frame->hierarchy, (int)(contourThicknessScale * 2));
+        drawAllContours(drawing, vector<vector<Point>>{ frame->prominentContour }, frame->hierarchy, (int)(contourThicknessScale * 4));
+        // Resize contours to the size of the source image.
+        Mat largeDrawing; resize(drawing, largeDrawing, src.size(), 0, 0, INTER_LINEAR);
+        // Copy the contours on the camera feed.
+        // TODO: Fix opacity
+        srcMat += largeDrawing;
+
+        // Convert the black & white result image into a coloured image so that it can later be copied to the screen.
+        Mat result; cvtColor(frame->result, result, COLOR_GRAY2RGB);
+        double resultScaling = ((double)srcMat.rows * 2/5) / result.rows;
+        // Resize the result image for it to be displayed on the screen.
+        Mat scaledResult; resize(result, scaledResult, Size(), resultScaling, resultScaling, INTER_LINEAR);
+
+        // Initialise screen
+        Mat screen = Mat::zeros(Size(srcMat.cols + scaledResult.cols, srcMat.rows), CV_8UC3);
+        // Copy the camera feed and the result image to the screen.
+        srcMat.copyTo(screen(Rect(Point(0, 0), srcMat.size())));
+        scaledResult.copyTo(screen(Rect(srcMat.cols, (screen.rows - scaledResult.rows) / 2, scaledResult.cols, scaledResult.rows)));
+
+        // Colour Output
+        putText(screen, frame->colour, Point(srcMat.cols, (screen.rows - scaledResult.rows + 48) / 2 + scaledResult.rows), FONT_HERSHEY_SIMPLEX, 1, Scalar(255, 255, 255), 2);
+
+        // Display the modified camera feed with the results.
+        imshow("Frame", screen);
+    }
+    else
+    {
+        // Display the camera feed, unmodified.
+        imshow("Frame", srcMat);
+    }
 }
 
 /// <summary>
