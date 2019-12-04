@@ -1,21 +1,27 @@
 #pragma once
 #include <opencv2/core.hpp>
 #include <string>
-using namespace std;
-using namespace cv;
 
-struct FrameResult
+namespace hex
 {
-    Mat src;
+    struct FrameResult
+    {
+        cv::Mat src;
 
-    vector<Vec4i> hierarchy;
-    vector<vector<Point>> contours;
-    vector<Point> prominentContour;
-    Size processingSize;
+        std::vector<cv::Vec4i> hierarchy;
+        std::vector<std::vector<cv::Point>> contours;
+        std::vector<cv::Point> prominentContour;
+        cv::Size processingSize;
 
-    string colour;
-    Mat result;
+        std::string colour;
+        cv::Mat result;
 
-public:
-    FrameResult(Mat src, string colour, Mat result, vector<Vec4i> hierarchy, vector<vector<Point>> contours, vector<Point> prominentContour, Size processingSize);
-};
+    public:
+        FrameResult(
+            cv::Mat src, std::string colour, cv::Mat result,
+            std::vector<cv::Vec4i> hierarchy,
+            std::vector<std::vector<cv::Point>> contours,
+            std::vector<cv::Point> prominentContour,
+            cv::Size processingSize);
+    };
+}
