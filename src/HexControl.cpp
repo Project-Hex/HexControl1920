@@ -1,13 +1,17 @@
+#include <string>
+#include <optional>
+#include <future>
+#include <chrono>
+#include <iostream>
+#include <stdarg.h>
 #include <opencv2/core.hpp>
 #include <opencv2/imgcodecs.hpp>
 #include <opencv2/imgproc.hpp>
 #include <opencv2/highgui.hpp>
-#include <iostream>
-#include <stdarg.h>
-#include <optional>
 #include "Mask.h"
 #include "MaskedImage.h"
 #include "FrameResult.h"
+#include "Processing.h"
 
 #pragma region Functions
 static std::optional<hex::FrameResult> processFrame(cv::InputArray src, std::vector<hex::Mask>& maskDefinitions);
@@ -22,6 +26,11 @@ static void cropAndStraigthen(cv::RotatedRect bounds, cv::InputArray input, cv::
 static void createWindow(cv::String name, cv::InputArray& image);
 static void createWindow(cv::String name, cv::InputArray& image, int width, int height);
 static double angle(cv::Point pt1, cv::Point pt2, cv::Point pt0);
+
+// Console Output Helpers
+unsigned ln = 1;
+auto colour(int n, const std::string& s) { return "\33[38;5;" + std::to_string(n) + 'm' + s + "\33[m"; }
+auto line(int l) { int m = l - ln; ln = l; return "\r" + (m < 0 ? "\33[" + std::to_string(-m) + 'A' : std::string(m, '\n')); }
 #pragma endregion
 
 constexpr double imageProcessingScale = 0.6;
@@ -117,8 +126,13 @@ static std::optional<hex::FrameResult> processFrame(cv::InputArray src, std::vec
 
     std::vector<hex::MaskedImage> masks; getColourMasks(hsvSrc, maskDefinitions, masks);
 
+    std::vector<std::future<hex::Processing>> searches;
     for (hex::MaskedImage mask : masks)
 	{
+        // TODO: See if it is possible to pass `cv::Mat`s by reference.
+        searches.push_back(std::async(std::launch::async, [src, smallSrc, mask]() -> hex::Processing {
+            auto start = std::chrono::high_resolution_clock::now();
+
 		// Detect edges
         cv::Mat edges; cv::Canny(mask.maskImage, edges, 100, 200, 3);
 		// Find contours
@@ -145,13 +159,34 @@ static std::optional<hex::FrameResult> processFrame(cv::InputArray src, std::vec
 			}
 		}
 
-        if (prominentContour.has_value())
-            return std::optional<hex::FrameResult>(hex::FrameResult(
+            auto end = std::chrono::high_resolution_clock::now();
+
+            return hex::Processing(
+                prominentContour.has_value()
+                    ? std::optional<hex::FrameResult>(hex::FrameResult(
                 src.getMat(), mask.mask.colour, cropped,
-                hierarchy, contours, *prominentContour, smallSrc.size()));
+                        hierarchy, contours, *prominentContour, smallSrc.size()))
+                    : (std::optional<hex::FrameResult>)std::nullopt,
+                // colour
+                mask.mask.colour,
+                // duration
+                (end - start).count());
+        }));
     }
 
-    return std::nullopt;
+    std::optional<hex::FrameResult> res = std::nullopt; unsigned ln = 1;
+    for (std::future<hex::Processing>& search : searches)
+    {
+        auto processing = search.get();
+
+        std::cout << line(ln++)
+            << colour(143, processing.colour) << " processed in "
+            << colour(143, std::to_string(processing.duration / 1000 / 1000))
+            << "ms" << std::flush;
+
+        if (processing.result.has_value()) res = processing.result;
+    }
+    return res;
 }
 
 static void display(cv::InputArray src, std::optional<hex::FrameResult> frame)

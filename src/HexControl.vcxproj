@@ -158,11 +158,13 @@
     <ClCompile Include="HexControl.cpp" />
     <ClCompile Include="Mask.cpp" />
     <ClCompile Include="MaskedImage.cpp" />
+    <ClCompile Include="Processing.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FrameResult.h" />
     <ClInclude Include="Mask.h" />
     <ClInclude Include="MaskedImage.h" />
+    <ClInclude Include="Processing.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
