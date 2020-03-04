@@ -24,8 +24,21 @@ static void createWindow(cv::String name, cv::InputArray& image, int width, int 
 static double angle(cv::Point pt1, cv::Point pt2, cv::Point pt0);
 #pragma endregion
 
-constexpr double imageProcessingScale = 0.2;
+constexpr double imageProcessingScale = 0.6;
 constexpr double contourThicknessScale = 1;
+constexpr int displayHeight = 768;
+
+#ifdef TRAINING
+    std::string character =   "Z";
+    std::string orientation = "3"; // O, 1, 2, 3 - Clockwise rotation (paper has to be rotated anti-clockwise from behind)
+    constexpr int loopTiming = 4;
+
+    int loop_timer = loopTiming;
+    int trainingDataCounter = 0;
+    #define WRITE_TRAINING_DATA() if (result.has_value()) cv::imwrite("training\\" + character + "\\" + orientation + "\\" + std::to_string(trainingDataCounter++) + ".bmp", result->result);
+#else
+    #define WRITE_TRAINING_DATA()
+#endif
 
 int main(int argc, char** argv)
 {
@@ -73,6 +86,14 @@ int main(int argc, char** argv)
 
         // Display the processing result.
         display(frame, result);
+
+#ifdef TRAINING
+        if (--loop_timer < 0)
+        {
+            loop_timer = loopTiming;
+            WRITE_TRAINING_DATA()
+        }
+#endif
 
         // Close on `Escape` key press.
         char c = (char)cv::waitKey(1);
@@ -165,6 +186,11 @@ static void display(cv::InputArray src, std::optional<hex::FrameResult> frame)
 
         // Colour Output
         cv::putText(screen, frame->colour, cv::Point(srcMat.cols, (screen.rows - scaledResult.rows + 48) / 2 + scaledResult.rows), cv::FONT_HERSHEY_SIMPLEX, 1, cv::Scalar(255, 255, 255), 2);
+
+#ifdef TRAINING
+        if (loop_timer <= 0)
+            cv::circle(screen, cv::Point(screen.cols - 32, 32), 8, cv::Scalar(50, 50, 255), 16);
+#endif
 
         // Display the modified camera feed with the results.
         cv::imshow("Frame", screen);
