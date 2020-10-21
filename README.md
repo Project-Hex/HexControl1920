@@ -43,7 +43,7 @@ The distance from the Drop Zone back to the Launch Point is expected to be less 
 * 4 Ground Markers each with its own alphanumeric character (possibly color too)
 * Must report back to the ground station the GPS co-ordinates, colour of the inner square and the alphanumeric character.
 
-![img](https://github.com/3888winner/HexControl1920/blob/master/chrome_mpZNAHnhuM.png?raw=true)
+![img](https://github.com/3888winner/HexControl1920/blob/master/chrome_G7G8dINHBc.png?raw=true)
 
 ### How?
 * Corner Detection?
