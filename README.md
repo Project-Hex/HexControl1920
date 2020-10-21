@@ -24,12 +24,6 @@ Control Team Files for Project Hex 19/20
 
 ## Communication
 
-### Goals
-* Start using python and dronekit
-* Start researching appropriate hardware
-* Simple take-off and land
-* Simple go to
-
 ### Tasks
 
 #### Core Mission Tasks
@@ -42,6 +36,12 @@ Control Team Files for Project Hex 19/20
 * Speed Trial
 * Ground Marker Identification
 * Area Search (Rectangular Area)
+
+### Goals
+* Start using python and dronekit
+* Start researching appropriate hardware
+* Simple take-off and land
+* Simple go to
 
 #### Route distances
 The organisers will provide details of the routes from the Launch Point to the Drop Zone at the start of the demonstration event; as guidance for the teams, the approximate distances are expected to be:
