@@ -57,6 +57,8 @@ The distance from the Drop Zone back to the Launch Point is expected to be less 
 
 ## Communication / Drone Control
 
+Install [Mission Planner](http://ardupilot.org/planner/), so you can view your simulation.
+
 Install Python 2.7 from the [anaconda website](https://www.anaconda.com/distribution/#download-section). (Make sure that you note the install path)
 
 Once installed, run the anaconda navigator, go to environments and create a new environment, making sure that Python 2.7 is selected.
