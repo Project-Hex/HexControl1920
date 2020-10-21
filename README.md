@@ -118,6 +118,8 @@ Make sure you install [Mission Planner](http://ardupilot.org/planner/), so you c
 
 [Dronekit documentation](https://dronekit.netlify.com/guide/index.html)
 
+[Dronekit-MissionPlanner Introduction videos](https://www.youtube.com/playlist?list=PLuteWQUGtU9BcXXr3jCG00uVXFwQJkLRa)
+
 Check out the dronekit examples on this repo.
 
 ## Antenna Tracker
