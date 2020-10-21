@@ -4,23 +4,6 @@ Control Team Files for Project Hex 19/20
 
 # Objectives
 ![img](https://github.com/3888winner/HexControl1920/blob/master/chrome_mpZNAHnhuM.png?raw=true)
-## Image Recognition
-
-### Goals
-* Make different multi-colored test images
-* Start developing based on test images
-* Try different color detection methods and save results
-* Try different target detection methods and save results
-
-### Tasks
-* 4 Ground Markers each with its own alphanumeric character (possibly color too)
-* Must report back to the ground station the GPS co-ordinates, colour of the inner square and the alphanumeric character.
-
-### How?
-* Corner Detection?
-* Edge Detection? (Last year's method)
-* Color-filtering?
-* Other options?
 
 ## Communication
 
@@ -46,7 +29,27 @@ Control Team Files for Project Hex 19/20
 #### Route distances
 The organisers will provide details of the routes from the Launch Point to the Drop Zone at the start of the demonstration event; as guidance for the teams, the approximate distances are expected to be:
 Route A: 4.0 km; Route B: 2.5 km; Route C:1.5 km
-The distance from the Drop Zone back to the Launch Point is expected to be less than 0.5 km. All distances quoted are the straight-line distances between Waypoints, and do not account for positioning manoeuvres or turn radii. 
+The distance from the Drop Zone back to the Launch Point is expected to be less than 0.5 km. All distances quoted are the straight-line distances between Waypoints, and do not account for positioning manoeuvres or turn radio. 
+
+## Image Recognition
+
+### Goals
+* Make different multi-colored test images
+* Start developing based on test images
+* Try different color detection methods and save results
+* Try different target detection methods and save results
+
+### Tasks
+* 4 Ground Markers each with its own alphanumeric character (possibly color too)
+* Must report back to the ground station the GPS co-ordinates, colour of the inner square and the alphanumeric character.
+
+### How?
+* Corner Detection?
+* Edge Detection? (Last year's method)
+* Color-filtering?
+* Other options?
+
+
 
 # Getting Started
 
