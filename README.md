@@ -55,29 +55,6 @@ The distance from the Drop Zone back to the Launch Point is expected to be less 
 
 ## Setup
 
-### Windows
-
-The project has a Visual Studio project ready to use. The only prerequisites are a local install of OpenCV.
-
-#### OpenCV
-
-Download the [OpenCV Binaries for Windows](https://opencv.org/releases/) and unpack them somewhere on your system. _(e.g. `C:\Program Files\opencv`)_
-
-Set the `OPENCV_DIR` environment variable to the `.\build\x64\vc15` folder inside your OpenCV  installation directory. _(e.g. `C:\Program Files\opencv\build\x64\vc15`)_
-
-Add the following entry to your `PATH` environment variable: `%OPENCV_DIR%\bin`
-
-> Environment variables can be set under `Control Panel\System and Security\System\Advanced System Settings\Environment Variables...`.
-
-The Visual Studio project will use the OpenCV install specified by your `OPENCV_DIR` environment variable.
-
-## Image Recognition
-* OpenCV Install: https://opencv.org/releases/
-* Setting up OpenCV with Visual Studio 2017 (Windows): https://www.youtube.com/watch?v=Oi3HaBH8RC4
-* Setting up OpenCV with Xcode (Mac): https://www.youtube.com/watch?v=o62iO8SssZk
-* OpenCV 4.1.1 Tutorial: https://docs.opencv.org/4.1.1/d9/df8/tutorial_root.html 
-* opencv c++ image display source code:https://docs.opencv.org/2.4/doc/tutorials/introduction/display_image/display_image.html
-
 ## Communication / Drone Control
 
 Install Python 2.7 from the [anaconda website](https://www.anaconda.com/distribution/#download-section). (Make sure that you note the install path)
@@ -114,8 +91,6 @@ If it executed with no problems then you're ready to start writing dronekit prog
 
 Make sure you install [Mission Planner](http://ardupilot.org/planner/), so you can view your simulation.
 
-[Dronekit guide](https://www.youtube.com/watch?v=TFDWs_DG2QY&list=PLuteWQUGtU9BcXXr3jCG00uVXFwQJkLRa&index=1)
-
 [Dronekit documentation](https://dronekit.netlify.com/guide/index.html)
 
 [Dronekit-MissionPlanner Introduction videos](https://www.youtube.com/playlist?list=PLuteWQUGtU9BcXXr3jCG00uVXFwQJkLRa)
@@ -140,3 +115,27 @@ Check out the dronekit examples on this repo.
 
 ## Research & Examples
 * https://www.pyimagesearch.com/2015/05/04/target-acquired-finding-targets-in-drone-and-quadcopter-video-streams-using-python-and-opencv/
+
+### Windows
+
+The project has a Visual Studio project ready to use. The only prerequisites are a local install of OpenCV.
+
+#### OpenCV
+
+Download the [OpenCV Binaries for Windows](https://opencv.org/releases/) and unpack them somewhere on your system. _(e.g. `C:\Program Files\opencv`)_
+
+Set the `OPENCV_DIR` environment variable to the `.\build\x64\vc15` folder inside your OpenCV  installation directory. _(e.g. `C:\Program Files\opencv\build\x64\vc15`)_
+
+Add the following entry to your `PATH` environment variable: `%OPENCV_DIR%\bin`
+
+> Environment variables can be set under `Control Panel\System and Security\System\Advanced System Settings\Environment Variables...`.
+
+The Visual Studio project will use the OpenCV install specified by your `OPENCV_DIR` environment variable.
+
+## Image Recognition
+* OpenCV Install: https://opencv.org/releases/
+* Setting up OpenCV with Visual Studio 2017 (Windows): https://www.youtube.com/watch?v=Oi3HaBH8RC4
+* Setting up OpenCV with Xcode (Mac): https://www.youtube.com/watch?v=o62iO8SssZk
+* OpenCV 4.1.1 Tutorial: https://docs.opencv.org/4.1.1/d9/df8/tutorial_root.html 
+* opencv c++ image display source code:https://docs.opencv.org/2.4/doc/tutorials/introduction/display_image/display_image.html
+
