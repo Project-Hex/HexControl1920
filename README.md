@@ -1,5 +1,5 @@
 ![img](https://github.com/3888winner/HexControl1920/blob/master/HexCover.jpg?raw=true)
-# HexControl 20/21
+# HexControl 19/20
 Control Team Files for Project Hex 20/21
 
 # Objectives
